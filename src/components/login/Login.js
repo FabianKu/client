@@ -76,7 +76,11 @@ class Login extends React.Component {
     super();
     this.state = {
       name: null,
-      username: null
+      username: null,
+
+
+      //adding password as key (attribute) and null as default value
+      password: null
     };
   }
   /**
@@ -91,7 +95,10 @@ class Login extends React.Component {
       },
       body: JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        name: this.state.name,
+
+        //connection password with back-end
+        password: this.state.password
       })
     })
       .then(response => response.json())
@@ -150,9 +157,19 @@ class Login extends React.Component {
                 this.handleInputChange("name", e.target.value);
               }}
             />
+            /* adding field for password*/
+
+            <Label>Password</Label>
+            <InputField
+                placeholder="Enter here.."
+                onChange={e => {
+                  this.handleInputChange("password", e.target.value);
+                }}
+            />
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
+                  //set the property that password should never be empty
+                disabled={!this.state.username || !this.state.name || !this.state.password}
                 width="50%"
                 onClick={() => {
                   this.login();
