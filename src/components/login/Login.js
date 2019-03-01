@@ -19,8 +19,8 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
-  height: 375px;
+  width: 40%;
+  height: 300px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -75,10 +75,9 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
+      //boolean which indicates if login is allowed or not
+      log_allowed: false,
       username: null,
-
-
       //adding password as key (attribute) and null as default value
       password: null
     };
@@ -96,26 +95,28 @@ class Login extends React.Component {
       body: JSON.stringify({
         username: this.state.username,
         name: this.state.name,
-
+        //added birthday to json object
+        birth_date: this.state.birth_date,
         //connection password with back-end
-        password: this.state.password
+        password: this.state.password,
       })
     })
-      .then(response => response.json())
-      .then(returnedUser => {
-        const user = new User(returnedUser);
-        // store the token into the local storage
-        localStorage.setItem("token", user.token);
-        // user login successfully worked --> navigate to the route /game in the GameRouter
-        this.props.history.push(`/game`);
-      })
-      .catch(err => {
-        if (err.message.match(/Failed to fetch/)) {
-          alert("The server cannot be reached. Did you start it?");
-        } else {
-          alert(`Something went wrong during the login: ${err.message}`);
-        }
-      });
+        .then(response => response.json())
+        .then(returnedUser => {
+          const user = new User(returnedUser);
+          // store the token into the local storage
+          localStorage.setItem("token", user.token);
+          // user login successfully worked --> navigate to the route /game in the GameRouter
+          this.props.history.push(`/game`);
+
+        })
+        .catch(err => {
+          if (err.message.match(/Failed to fetch/)) {
+            alert("The server cannot be reached. Did you start it?");
+          } else {
+            alert(`Something went wrong during the login: ${err.message}`);
+          }
+        });
   }
 
   /**
@@ -129,6 +130,10 @@ class Login extends React.Component {
     this.setState({ [key]: value });
   }
 
+  /**go back function to return to the register page
+   * **/
+  go_back() {this.props.history.push(`/register`);}
+
   /**
    * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
    * Initialization that requires DOM nodes should go here.
@@ -136,7 +141,11 @@ class Login extends React.Component {
    * You may call setState() immediately in componentDidMount().
    * It will trigger an extra rendering, but it will happen before the browser updates the screen.
    */
-  componentDidMount() {}
+  componentDidMount() {
+
+  }
+
+
 
   render() {
     return (
@@ -148,13 +157,6 @@ class Login extends React.Component {
               placeholder="Enter here.."
               onChange={e => {
                 this.handleInputChange("username", e.target.value);
-              }}
-            />
-            <Label>Name</Label>
-            <InputField
-              placeholder="Enter here.."
-              onChange={e => {
-                this.handleInputChange("name", e.target.value);
               }}
             />
             /* adding field for password*/
@@ -169,13 +171,22 @@ class Login extends React.Component {
             <ButtonContainer>
               <Button
                   //set the property that password should never be empty
-                disabled={!this.state.username || !this.state.name || !this.state.password}
+                disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
                   this.login();
                 }}
               >
                 Login
+              </Button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Button
+                  width="40%"
+                  onClick={() => {
+                    this.go_back();
+                  }}
+              >
+                Back
               </Button>
             </ButtonContainer>
           </Form>

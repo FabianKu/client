@@ -6,6 +6,9 @@ import Player from "../../views/Player";
 import { Spinner } from "../../views/design/Spinner";
 import { Button } from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
+//import direct_to_login from register
+import{direct_to_login} from "../register/register";
+
 
 const Container = styled(BaseContainer)`
   color: white;
