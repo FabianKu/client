@@ -111,7 +111,7 @@ class Register extends React.Component {
                 // store the token into the local storage
                 localStorage.setItem("token", user.token);
                 // user login successfully worked --> navigate to the route /game in the GameRouter
-                this.props.history.push(`/game`);
+                this.props.history.push(`/login`);
 
             })
             .catch(err => {

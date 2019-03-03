@@ -5,6 +5,7 @@ import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/register"
+import {RegisterGuard} from "../routeProtectors/RegisterGuard";
 
 /**
  * Main router of your application.
@@ -39,10 +40,13 @@ class AppRouter extends React.Component {
               )}
             />
               <Route
+
                   path="/register"
                   exact
                   render={() => (
-                          <Register />
+                      <RegisterGuard>
+                        <Register />
+                      </RegisterGuard>
                   )}
               />
                       </div>

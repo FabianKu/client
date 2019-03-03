@@ -6,6 +6,11 @@ import User from "../shared/models/User";
 import { withRouter } from "react-router-dom";
 import { Button } from "../../views/design/Button";
 
+//import { View } from 'react-native'
+//import Toaster, { ToastStyles } from 'react-native-toaster'
+
+import { Redirect } from 'react-router';
+
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -76,10 +81,12 @@ class Login extends React.Component {
     super();
     this.state = {
       //boolean which indicates if login is allowed or not
-      log_allowed: false,
+      log_allowed: null,
       username: null,
       //adding password as key (attribute) and null as default value
-      password: null
+      password: null,
+      message: null,
+
     };
   }
   /**
@@ -87,27 +94,21 @@ class Login extends React.Component {
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
   login() {
-    fetch(`${getDomain()}/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        name: this.state.name,
-        //added birthday to json object
-        birth_date: this.state.birth_date,
-        //connection password with back-end
-        password: this.state.password,
-      })
-    })
+      fetch(
+          `${getDomain()}/password?username=${this.state.username}&password=${
+              this.state.password
+              }`,
+          {
+              method: "GET"
+          }
+      )
         .then(response => response.json())
-        .then(returnedUser => {
-          const user = new User(returnedUser);
-          // store the token into the local storage
-          localStorage.setItem("token", user.token);
-          // user login successfully worked --> navigate to the route /game in the GameRouter
-          this.props.history.push(`/game`);
+        .then(returned_boolean => {
+          if(returned_boolean){
+              this.props.history.push(`/game`);}
+          else {
+              alert("wrong password or username")
+          }
 
         })
         .catch(err => {
@@ -169,6 +170,15 @@ class Login extends React.Component {
                 }}
             />
             <ButtonContainer>
+                <Button
+                    width="40%"
+                    onClick={() => {
+                        this.go_back();
+                    }}
+                >
+                    Back
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Button
                   //set the property that password should never be empty
                 disabled={!this.state.username || !this.state.password}
@@ -178,15 +188,6 @@ class Login extends React.Component {
                 }}
               >
                 Login
-              </Button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Button
-                  width="40%"
-                  onClick={() => {
-                    this.go_back();
-                  }}
-              >
-                Back
               </Button>
             </ButtonContainer>
           </Form>
