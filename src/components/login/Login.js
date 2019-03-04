@@ -6,6 +6,7 @@ import User from "../shared/models/User";
 import { withRouter } from "react-router-dom";
 import { Button } from "../../views/design/Button";
 
+
 //import { View } from 'react-native'
 //import Toaster, { ToastStyles } from 'react-native-toaster'
 
@@ -105,7 +106,9 @@ class Login extends React.Component {
         .then(response => response.json())
         .then(returned_boolean => {
           if(returned_boolean){
-              this.props.history.push(`/game`);}
+              this.set_user_token()
+              this.props.history.push('/game');}
+
           else {
               alert("wrong password or username")
           }
@@ -118,6 +121,18 @@ class Login extends React.Component {
             alert(`Something went wrong during the login: ${err.message}`);
           }
         });
+  }
+
+  set_user_token(){
+      fetch(`${getDomain()}/get_user?username=${this.state.username}`,
+          {
+              method: "GET"
+          }
+      )
+          .then(resp => resp.json())
+          .then(returned_user => {
+              localStorage.setItem("token", returned_user.token);})
+
   }
 
   /**

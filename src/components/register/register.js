@@ -118,7 +118,7 @@ class Register extends React.Component {
                 if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");
                 } else {
-                    alert(`Something went wrong during the login: ${err.message}`);
+                    alert(`Something went wrong during the login, try different username: ${err.message}`);
                 }
             });
 
@@ -174,7 +174,7 @@ class Register extends React.Component {
 
                         <Label>Date of birth</Label>
                         <InputField
-                            placeholder="Enter here.."
+                            placeholder="Enter here.. Format: yyyy-MM-dd"
                             onChange={e => {
                                 this.handleInputChange("birth_date", e.target.value);
                             }}
