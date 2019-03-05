@@ -2,19 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { BaseContainer } from "../../helpers/layout";
 import { getDomain } from "../../helpers/getDomain";
-import Player from "../../views/Player";
-import { Spinner } from "../../views/design/Spinner";
-import { Button } from "../../views/design/Button";
-import { withRouter } from "react-router-dom";
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
+import { withRouter } from "react-router-dom";
+
+
+
+import User from "../shared/models/User";
 
 
 import Table1 from '../../components/table/table'
@@ -32,7 +25,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
+  width: 150%;
   height: 300px;
   font-size: 16px;
   font-weight: 300;
@@ -89,31 +82,69 @@ const rows = [
 //here comes the data for the table
 //the description here and in the field isKey in the table class must be the same
 var data = [
-    { name: 'Gob', value: '2'},
-    { name: 'Buster', value: '5'},
+    { name: 'Name' , value: '4' },
+    { name: 'Username', value: "9"},
     { name: 'George Michael', value: '4'}
 ];
 
+
+
 class Overview extends React.Component {
+    helpvar;
+
     constructor() {
         super();
         this.state = {
-            users: null,
-            name:"hallo",
-            username:"9"
-        };
+            user: null,
+            name: 'hallo',
+            data1: []
+
+
+        }
 
 
 
     }
+
+    set_user(returned_user) {
+
+        this.setState({user : returned_user})
+
+        this.setState({data1 : [
+            {name : 'Username', value: this.state.user.username}
+        ,{name: 'Creation date', value: this.state.user.creation_date }
+        ,{name: 'Online status', value: this.state.user.status}
+        ,{name: 'Date of birth', value: this.state.user.birth_date}]})
+        debugger;
+
+
+    }
+
 
     componentDidMount() {
+        let name = this.props.location.pathname.split("/").pop();
+
+        this.setState({name : 'world'})
+        debugger;
+
+        fetch(`${getDomain()}/user_for_overview?name=${name}`,
+            {
+                method: "GET",
+            }
+        )
+            .then(response => response.json())
+            .then(returned_user => {
+                    this.set_user(returned_user)
+
+                }
+            )
+            .catch(err => {
+                console.log(err);
+                alert("Something went wrong fetching the users: " + err);
+            });
     }
 
-    render() {
-
-
-
+    render()
 
              {
                 return (
@@ -122,7 +153,7 @@ class Overview extends React.Component {
                             <Form>
                     <div className="App">
                         <p className="Table-header"><Label>Information of User</Label></p>
-                        <Table1 data={data}/>
+                        <Table1 data={this.state.data1}/>
                             </div>
 
                         </Form>
@@ -130,7 +161,6 @@ class Overview extends React.Component {
                     </BaseContainer>)
 
             }
-        }
 
 
 

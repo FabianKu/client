@@ -106,7 +106,9 @@ class Login extends React.Component {
         .then(response => response.json())
         .then(returned_boolean => {
           if(returned_boolean){
+
               this.set_user_token()
+              debugger;
               this.props.history.push('/game');}
 
           else {

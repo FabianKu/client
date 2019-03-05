@@ -62,6 +62,10 @@ class Game extends React.Component {
       });
   }
 
+  go_to_overview(name) {
+    this.props.history.push("/game/dashboard/overview/"+name);
+  };
+
   render() {
     return (
       <Container>
@@ -74,7 +78,7 @@ class Game extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
-                  <PlayerContainer key={user.id}>
+                  <PlayerContainer key={user.id} onClick={()=>{this.go_to_overview(user.username)}}>
                     <Player user={user} />
                   </PlayerContainer>
                 );

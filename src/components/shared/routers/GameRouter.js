@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Redirect, Route } from "react-router-dom";
 import Game from "../../game/Game";
+import Overview from "../../overview/Overview"
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,12 @@ class GameRouter extends React.Component {
           path={`${this.props.base}`}
           render={() => <Redirect to={`${this.props.base}/dashboard`} />}
         />
+
+
+          <Route
+              path={`${this.props.base}/dashboard/overview/:userid`}
+              render={props => <Overview {...props} />}
+          />
       </Container>
     );
   }

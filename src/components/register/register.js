@@ -120,7 +120,7 @@ class Register extends React.Component {
                 } else {
                     alert(`Something went wrong during the login, try different username: ${err.message}`);
                 }
-            });
+            });debugger;
 
     }
 
@@ -132,7 +132,7 @@ class Register extends React.Component {
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
-        this.setState({ [key]: value });
+        this.setState({ [key]: value });debugger;
     }
 
     /**
