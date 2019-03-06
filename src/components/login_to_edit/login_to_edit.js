@@ -6,6 +6,12 @@ import User from "../shared/models/User";
 import { withRouter } from "react-router-dom";
 import { Button } from "../../views/design/Button";
 
+
+//import { View } from 'react-native'
+//import Toaster, { ToastStyles } from 'react-native-toaster'
+
+import { Redirect } from 'react-router';
+
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -13,14 +19,15 @@ const FormContainer = styled.div`
   align-items: center;
   min-height: 300px;
   justify-content: center;
+  width: 900px;
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 650px;
+  width: 40%;
+  height: 300px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -65,7 +72,7 @@ const ButtonContainer = styled.div`
  * https://reactjs.org/docs/react-component.html
  * @Class
  */
-class Register extends React.Component {
+class Login_to_edit extends React.Component {
     /**
      * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
      * The constructor for a React component is called before it is mounted (rendered).
@@ -75,53 +82,41 @@ class Register extends React.Component {
     constructor() {
         super();
         this.state = {
-            name: null,
-            username: null,
-
-            //added birth date (which will be stored)
-            date_birth: null,
+            //defining the id
+            id: null,
             //adding password as key (attribute) and null as default value
             password: null,
-            //second password to make sure it was typed in correctly
-            //password2: null
         };
     }
     /**
      * HTTP POST request is sent to the backend.
      * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
      */
-    register() {
-        fetch(`${getDomain()}/users`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                name: this.state.name,
-                //added birthday to json object
-                date_birth: this.state.birth_date,
-                //connection password with back-end
-                password: this.state.password,
-            })
-        })
+    login() {
+        fetch(
+            `${getDomain()}/password_to_edit?id=${this.state.id}&password=${
+                this.state.password
+                }`,
+            {
+                method: "GET"
+            }
+        )
             .then(response => response.json())
-            .then(returnedUser => {
-                const user = new User(returnedUser);
-                // store the token into the local storage
-                localStorage.setItem("token", user.token);
-                // user login successfully worked --> navigate to the route /game in the GameRouter
-                this.props.history.push(`/login`);
+            .then(returned_boolean => {
+                if(returned_boolean){
+                    this.props.history.push("/game/dashboard/edit_page/"+this.state.id)}
+                else {
+                    alert("wrong password")
+                }
 
             })
             .catch(err => {
                 if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");
                 } else {
-                    alert(`Something went wrong during the login, try different username: ${err.message}`);
+                    alert(`Something went wrong during the login: ${err.message}`);
                 }
             });
-
     }
 
     /**
@@ -135,13 +130,10 @@ class Register extends React.Component {
         this.setState({ [key]: value });
     }
 
-    /**
-     * Function which gets invoked when Sign in button is pressed
-     * Function directs User to login page
-     **/
-    direct_to_login(){
-        this.props.history.push(`/login`);
-    }
+    /**go back function to return to the register page
+     * **/
+    go_back() {
+        this.props.history.push("/game/dashboard/overview/"+this.state.id);}
 
     /**
      * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
@@ -150,35 +142,21 @@ class Register extends React.Component {
      * You may call setState() immediately in componentDidMount().
      * It will trigger an extra rendering, but it will happen before the browser updates the screen.
      */
-    componentDidMount() {}
+
+
+    componentDidMount() {
+        //defining the id with the actual value
+        this.setState({id : this.props.location.pathname.split("/").pop() })
+    }
+
+
 
     render() {
+
         return (
             <BaseContainer>
                 <FormContainer>
                     <Form>
-                        <Label>Username</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("username", e.target.value);
-                            }}
-                        />
-                        <Label>Name</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("name", e.target.value);
-                            }}
-                        />
-
-                        <Label>Date of birth</Label>
-                        <InputField
-                            placeholder="Enter here.. Format: yyyy-MM-dd"
-                            onChange={e => {
-                                this.handleInputChange("birth_date", e.target.value);
-                            }}
-                        />
 
 
                         <Label>Password</Label>
@@ -188,32 +166,25 @@ class Register extends React.Component {
                                 this.handleInputChange("password", e.target.value);
                             }}
                         />
-                       /* <Label>Confirm Password</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("password", e.target.value);
-                            }}
-                        />*/
-
-
                         <ButtonContainer>
                             <Button
-                                //set the property that password should never be empty
-                                disabled={!this.state.username || !this.state.name || !this.state.password || !this.state.birth_date}
-                                width="30%"
+                                width="40%"
                                 onClick={() => {
-                                    this.register();
+                                    this.go_back();
                                 }}
                             >
-                                Register
+                                Back
                             </Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button
+                                //set the property that password should never be empty
+                                disabled={!this.state.password}
                                 width="50%"
-                                onClick={()=>{this.direct_to_login()}}
-                                >
-                                Go to Login Page
+                                onClick={() => {
+                                    this.login();
+                                }}
+                            >
+                                Login
                             </Button>
                         </ButtonContainer>
                     </Form>
@@ -227,4 +198,4 @@ class Register extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Register);
+export default withRouter(Login_to_edit);

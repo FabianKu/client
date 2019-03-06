@@ -11,6 +11,7 @@ import User from "../shared/models/User";
 
 
 import Table1 from '../../components/table/table'
+import {Button} from "../../views/design/Button";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -79,14 +80,6 @@ const rows = [
     ('username', 8),
 ];
 
-//here comes the data for the table
-//the description here and in the field isKey in the table class must be the same
-var data = [
-    { name: 'Name' , value: '4' },
-    { name: 'Username', value: "9"},
-    { name: 'George Michael', value: '4'}
-];
-
 
 
 class Overview extends React.Component {
@@ -98,36 +91,38 @@ class Overview extends React.Component {
             user: null,
             name: 'hallo',
             data1: []
-
-
         }
 
+    }
 
 
+    go_to_login_for_specific_user(id){
+        this.props.history.push("/game/dashboard/login_to_edit/"+id)
+    }
+
+    go_back(){
+        this.props.history.push("/game/dashboard");
     }
 
     set_user(returned_user) {
 
         this.setState({user : returned_user})
 
+
+        //here comes the data for the table
+        //the description here and in the field isKey in the table class must be the same
         this.setState({data1 : [
             {name : 'Username', value: this.state.user.username}
         ,{name: 'Creation date', value: this.state.user.creation_date }
         ,{name: 'Online status', value: this.state.user.status}
-        ,{name: 'Date of birth', value: this.state.user.birth_date}]})
-        debugger;
-
-
+        ,{name: 'Date of birth', value: this.state.user.date_birth}]})
     }
 
 
     componentDidMount() {
-        let name = this.props.location.pathname.split("/").pop();
+        let id = this.props.location.pathname.split("/").pop();
 
-        this.setState({name : 'world'})
-        debugger;
-
-        fetch(`${getDomain()}/user_for_overview?name=${name}`,
+        fetch(`${getDomain()}/user_for_overview?id=${id}`,
             {
                 method: "GET",
             }
@@ -144,6 +139,8 @@ class Overview extends React.Component {
             });
     }
 
+
+
     render()
 
              {
@@ -154,11 +151,36 @@ class Overview extends React.Component {
                     <div className="App">
                         <p className="Table-header"><Label>Information of User</Label></p>
                         <Table1 data={this.state.data1}/>
+
+                            </div>
+                                <div>
+                                <ButtonContainer>
+
+                        <Button
+                            width="40%"
+                            onClick={() => {
+                                this.go_to_login_for_specific_user(this.state.user.id);
+                            }}
+                        >
+                            Edit
+                        </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Button
+                                        width="40%"
+                                        onClick={() => {
+                                            this.go_back();
+                                        }}
+                                    >
+                                        Back
+                                    </Button>
+
+
+                                </ButtonContainer>
                             </div>
 
                         </Form>
                     </FormContainer>
                     </BaseContainer>)
+
 
             }
 

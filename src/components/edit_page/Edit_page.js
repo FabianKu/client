@@ -13,6 +13,7 @@ const FormContainer = styled.div`
   align-items: center;
   min-height: 300px;
   justify-content: center;
+   width: 900px;
 `;
 
 const Form = styled.div`
@@ -20,7 +21,7 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 50%;
-  height: 650px;
+  height: 300px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -54,6 +55,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  width: 370px;
 `;
 
 /**
@@ -65,7 +67,7 @@ const ButtonContainer = styled.div`
  * https://reactjs.org/docs/react-component.html
  * @Class
  */
-class Register extends React.Component {
+class Edit_page extends React.Component {
     /**
      * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
      * The constructor for a React component is called before it is mounted (rendered).
@@ -75,22 +77,18 @@ class Register extends React.Component {
     constructor() {
         super();
         this.state = {
-            name: null,
             username: null,
-
             //added birth date (which will be stored)
             date_birth: null,
             //adding password as key (attribute) and null as default value
-            password: null,
-            //second password to make sure it was typed in correctly
-            //password2: null
+            id: null,
         };
     }
     /**
      * HTTP POST request is sent to the backend.
      * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
      */
-    register() {
+    change() {
         fetch(`${getDomain()}/users`, {
             method: "POST",
             headers: {
@@ -135,13 +133,16 @@ class Register extends React.Component {
         this.setState({ [key]: value });
     }
 
+
+
+    direct_to_overview(){
+        this.props.history.push("/game/dashboard/overview/"+this.state.id);
+    }
+
     /**
      * Function which gets invoked when Sign in button is pressed
      * Function directs User to login page
      **/
-    direct_to_login(){
-        this.props.history.push(`/login`);
-    }
 
     /**
      * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
@@ -150,7 +151,10 @@ class Register extends React.Component {
      * You may call setState() immediately in componentDidMount().
      * It will trigger an extra rendering, but it will happen before the browser updates the screen.
      */
-    componentDidMount() {}
+    componentDidMount() {
+        //defining the id with the actual value
+        this.setState({id : this.props.location.pathname.split("/").pop() })
+    }
 
     render() {
         return (
@@ -164,13 +168,6 @@ class Register extends React.Component {
                                 this.handleInputChange("username", e.target.value);
                             }}
                         />
-                        <Label>Name</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("name", e.target.value);
-                            }}
-                        />
 
                         <Label>Date of birth</Label>
                         <InputField
@@ -180,40 +177,22 @@ class Register extends React.Component {
                             }}
                         />
 
-
-                        <Label>Password</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("password", e.target.value);
-                            }}
-                        />
-                       /* <Label>Confirm Password</Label>
-                        <InputField
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange("password", e.target.value);
-                            }}
-                        />*/
-
-
                         <ButtonContainer>
                             <Button
                                 //set the property that password should never be empty
-                                disabled={!this.state.username || !this.state.name || !this.state.password || !this.state.birth_date}
-                                width="30%"
+                                width="50%"
                                 onClick={() => {
-                                    this.register();
+                                    this.change();
                                 }}
                             >
-                                Register
+                                Submit Change
                             </Button>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button
-                                width="50%"
-                                onClick={()=>{this.direct_to_login()}}
-                                >
-                                Go to Login Page
+                                width="60%"
+                                onClick={()=>{this.direct_to_overview()}}
+                            >
+                                Back
                             </Button>
                         </ButtonContainer>
                     </Form>
@@ -227,4 +206,4 @@ class Register extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Register);
+export default withRouter(Edit_page);

@@ -12,7 +12,7 @@ class User {
     this.games = null;
     this.moves = null;
     this.password=null;
-    this.birth_date=null;
+    this.date_birth=null;
     this.log_allowed=false;
     Object.assign(this, data);
   }

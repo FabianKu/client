@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Redirect, Route } from "react-router-dom";
 import Game from "../../game/Game";
+
+//all the classes that are needed or to which I want to direct must be imported here with path
 import Overview from "../../overview/Overview"
+import Login_to_edit from "../../login_to_edit/login_to_edit";
+import Edit_page from "../../edit_page/Edit_page";
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +37,19 @@ class GameRouter extends React.Component {
               path={`${this.props.base}/dashboard/overview/:userid`}
               render={props => <Overview {...props} />}
           />
+
+
+          <Route
+              path={`${this.props.base}/dashboard/login_to_edit/:userid`}
+              render={props => <Login_to_edit {...props} />}
+          />
+
+
+          <Route
+              path={`${this.props.base}/dashboard/edit_page/:userid`}
+              render={props => <Edit_page {...props} />}
+          />
+
       </Container>
     );
   }

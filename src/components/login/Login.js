@@ -106,10 +106,9 @@ class Login extends React.Component {
         .then(response => response.json())
         .then(returned_boolean => {
           if(returned_boolean){
-
               this.set_user_token()
-              debugger;
-              this.props.history.push('/game');}
+              this.props.history.push('/game/dashboard');
+          }
 
           else {
               alert("wrong password or username")
@@ -160,7 +159,6 @@ class Login extends React.Component {
    * It will trigger an extra rendering, but it will happen before the browser updates the screen.
    */
   componentDidMount() {
-
   }
 
 
