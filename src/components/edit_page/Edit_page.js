@@ -79,7 +79,7 @@ class Edit_page extends React.Component {
         this.state = {
             username: null,
             //added birth date (which will be stored)
-            date_birth: null,
+            birthday: null,
             //adding password as key (attribute) and null as default value
             id: null,
         };
@@ -89,38 +89,27 @@ class Edit_page extends React.Component {
      * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
      */
     change() {
-        fetch(`${getDomain()}/users`, {
-            method: "POST",
+        fetch(`${getDomain()}/change/${this.state.id}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 username: this.state.username,
-                name: this.state.name,
-                //added birthday to json object
-                date_birth: this.state.birth_date,
-                //connection password with back-end
-                password: this.state.password,
+                birthday: this.state.birthday,
             })
         })
-            .then(response => response.json())
-            .then(returnedUser => {
-                const user = new User(returnedUser);
-                // store the token into the local storage
-                localStorage.setItem("token", user.token);
-                // user login successfully worked --> navigate to the route /game in the GameRouter
-                this.props.history.push(`/login`);
+            .then(this.props.history.push("/game/dashboard"))
 
-            })
             .catch(err => {
                 if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");
                 } else {
                     alert(`Something went wrong during the login, try different username: ${err.message}`);
                 }
-            });
-
+            });debugger;
     }
+
 
     /**
      *  Every time the user enters something in the input field, the state gets updated.
@@ -173,7 +162,7 @@ class Edit_page extends React.Component {
                         <InputField
                             placeholder="Enter here.. Format: yyyy-MM-dd"
                             onChange={e => {
-                                this.handleInputChange("birth_date", e.target.value);
+                                this.handleInputChange("birthday", e.target.value);
                             }}
                         />
 
