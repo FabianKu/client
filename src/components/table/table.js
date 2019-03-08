@@ -6,7 +6,6 @@ import styled from "styled-components";
 const Label = styled.label`
   color: white;
   margin-bottom: 5px;
-  text-transform: uppercase;
 `;
 
 

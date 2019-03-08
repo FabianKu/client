@@ -175,7 +175,7 @@ class Login extends React.Component {
                 this.handleInputChange("username", e.target.value);
               }}
             />
-            /* adding field for password*/
+
 
             <Label>Password</Label>
             <InputField

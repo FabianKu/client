@@ -91,6 +91,11 @@ class Register extends React.Component {
      * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
      */
     register() {
+        if(this.state.password!=this.state.password_test){
+            alert("passwords don't match")
+            return
+        }
+
         fetch(`${getDomain()}/users`, {
             method: "POST",
             headers: {
@@ -103,6 +108,8 @@ class Register extends React.Component {
                 date_birth: this.state.birth_date,
                 //connection password with back-end
                 password: this.state.password,
+                //the test password
+                password_test: this.state.password_test
             })
         })
             .then(response => response.json())
@@ -118,7 +125,7 @@ class Register extends React.Component {
                 if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");
                 } else {
-                    alert(`Something went wrong during the login, try different username: ${err.message}`);
+                    alert(`Something went wrong during the login, try different username or use correct type format for date: ${err.message}`);
                 }
             });
 
@@ -142,6 +149,8 @@ class Register extends React.Component {
     direct_to_login(){
         this.props.history.push(`/login`);
     }
+
+
 
     /**
      * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
@@ -174,7 +183,7 @@ class Register extends React.Component {
 
                         <Label>Date of birth</Label>
                         <InputField
-                            placeholder="Enter here.. Format: yyyy-MM-dd"
+                            placeholder="Enter here.. Format: dd/mm/yyyy"
                             onChange={e => {
                                 this.handleInputChange("birth_date", e.target.value);
                             }}
@@ -183,18 +192,23 @@ class Register extends React.Component {
 
                         <Label>Password</Label>
                         <InputField
+                            type="password"
+
                             placeholder="Enter here.."
                             onChange={e => {
                                 this.handleInputChange("password", e.target.value);
                             }}
                         />
-                       /* <Label>Confirm Password</Label>
+
+
+                        <Label>Confirm Password</Label>
                         <InputField
+                            type="password"
                             placeholder="Enter here.."
                             onChange={e => {
-                                this.handleInputChange("password", e.target.value);
+                                this.handleInputChange("password_test", e.target.value);
                             }}
-                        />*/
+                        />
 
 
                         <ButtonContainer>
