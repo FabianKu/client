@@ -107,7 +107,6 @@ class Login extends React.Component {
         .then(returned_boolean => {
           if(returned_boolean){
               this.set_user_token()
-              this.props.history.push('/game/dashboard');
           }
 
           else {
@@ -132,7 +131,8 @@ class Login extends React.Component {
       )
           .then(resp => resp.json())
           .then(returned_user => {
-              localStorage.setItem("token", returned_user.token);})
+              localStorage.setItem("token", returned_user.token);
+              this.props.history.push('/game/dashboard');})
 
   }
 
