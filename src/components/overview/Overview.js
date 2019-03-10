@@ -106,8 +106,10 @@ class Overview extends React.Component {
 
     set_user(returned_user) {
 
-        this.setState({user : returned_user})
 
+
+        this.setState({user : returned_user})
+        console.log("wrote the returned user into this.state.user")
 
         //here comes the data for the table
         //the description here and in the field isKey in the table class must be the same
@@ -116,6 +118,7 @@ class Overview extends React.Component {
         ,{name: 'Creation date', value: this.state.user.creation_date }
         ,{name: 'Online status', value: this.state.user.status}
         ,{name: 'Date of birth', value: this.state.user.date_birth}]})
+        console.log("all data was saved in data1")
     }
 
 
@@ -129,6 +132,7 @@ class Overview extends React.Component {
         )
             .then(response => response.json())
             .then(returned_user => {
+                console.log("got the user from back end")
                     this.set_user(returned_user)
 
                 }
