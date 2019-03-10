@@ -114,7 +114,9 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(returnedUser => {
+                console.log("saved the user pushes to login")
                 this.props.history.push(`/login`);
+                console.log("should not arrive here log, after push login")
                 const user = new User(returnedUser);
                 // store the token into the local storage
                 // user login successfully worked --> navigate to the route /game in the GameRouter

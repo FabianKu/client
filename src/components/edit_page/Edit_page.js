@@ -89,6 +89,7 @@ class Edit_page extends React.Component {
      * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
      */
     change() {
+        console.log("goes into fetching")
         fetch(`${getDomain()}/change/${this.state.id}`, {
             method: "PUT",
             headers: {

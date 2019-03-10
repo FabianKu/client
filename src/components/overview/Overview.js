@@ -118,7 +118,7 @@ class Overview extends React.Component {
         ,{name: 'Creation date', value: this.state.user.creation_date }
         ,{name: 'Online status', value: this.state.user.status}
         ,{name: 'Date of birth', value: this.state.user.date_birth}]})
-        console.log("all data was saved in data1")
+        console.log("all data was saved in data1" + this.state.username + this.state.date_birth)
     }
 
 
@@ -155,6 +155,7 @@ class Overview extends React.Component {
                     <div className="App">
                         <p className="Table-header"><Label>Information of User</Label></p>
                         <Table1 data={this.state.data1}/>
+
 
                             </div>
                                 <div>
