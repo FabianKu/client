@@ -92,7 +92,7 @@ class Overview extends React.Component {
             name: 'hallo',
             data1: []
         }
-
+        this.set_user=this.set_user.bind(this)
     }
 
 
@@ -109,7 +109,7 @@ class Overview extends React.Component {
 
 
         this.setState({user : returned_user})
-        console.log("wrote the returned user into this.state.user")
+        console.log("wrote the returned user into" + this.state.user)
 
         //here comes the data for the table
         //the description here and in the field isKey in the table class must be the same
@@ -118,7 +118,7 @@ class Overview extends React.Component {
         ,{name: 'Creation date', value: this.state.user.creation_date }
         ,{name: 'Online status', value: this.state.user.status}
         ,{name: 'Date of birth', value: this.state.user.date_birth}]})
-        console.log("all data was saved in data1" + this.state.username + this.state.date_birth)
+        console.log("all data was saved in data1" + this.state.user.username + this.state.user.date_birth)
     }
 
 
