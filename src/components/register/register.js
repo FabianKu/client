@@ -112,15 +112,17 @@ class Register extends React.Component {
                 password_test: this.state.password_test
             })
         })
-            .then(response => response.json())
-            .then(returnedUser => {
+            .then(response => {if(response.status===400){alert("wrong date format");return};
+            if(response.status === 409){alert("username already exists"); return};response.json()})
+            .then(()=> {
                 console.log("saved the user pushes to login")
                 this.props.history.push(`/login`);
                 console.log("should not arrive here log, after push login")
-                const user = new User(returnedUser);
+
                 // store the token into the local storage
                 // user login successfully worked --> navigate to the route /game in the GameRouter
             })
+            .catch()
             .catch(err => {
                 if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");

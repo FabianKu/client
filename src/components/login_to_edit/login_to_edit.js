@@ -7,8 +7,6 @@ import { withRouter } from "react-router-dom";
 import { Button } from "../../views/design/Button";
 
 
-//import { View } from 'react-native'
-//import Toaster, { ToastStyles } from 'react-native-toaster'
 
 import { Redirect } from 'react-router';
 
